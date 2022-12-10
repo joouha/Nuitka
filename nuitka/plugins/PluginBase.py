@@ -1055,9 +1055,15 @@ except ImportError:
 
         return result
 
-    @classmethod
-    def warning(cls, message):
-        plugins_logger.warning(cls.plugin_name + ": " + message)
+    def warning(self, message, **kwargs):
+
+        # Doing keyword only arguments manually, to keep older Python compatibility, and avoid
+        # user errors still.
+        mnemonic = kwargs.pop("mnemonic", None)
+        if kwargs:
+            self.sysexit("Illegal arguments for self.warning")
+
+        plugins_logger.warning(self.plugin_name + ": " + message, mnemonic=mnemonic)
 
     @classmethod
     def info(cls, message):
